@@ -3,28 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+[Flags]
+public enum Days
+{
+    None = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 4,
+    Thursday = 8,
+    Friday = 16,
+    Saturday = 32,
+    Sunday = 64,
+    Weekend = Saturday | Sunday
+}
 
-namespace @enum
+namespace enumwithflag
 {
     internal class Program
     {
-        enum Months
-        {
-            January = 1, February, March, April,
-            May, June, July, August = 108,
-            September, October, November, December
-        };
         static void Main(string[] args)
         {
-            int count = 0;
-            Console.WriteLine("The {0}th month of the year is {1}", (int)Months.August, Months.August);
+            Days meetingDays = Days.Monday | Days.Wednesday | Days.Friday;
+            Console.WriteLine("Meeting Days " + meetingDays);
+            // Output:
+            // Monday, Wednesday, Friday
 
-            foreach (Months e in Enum.GetValues(typeof(Months)))
-            {
-                count++;
-                Console.Write("Month " + (int)e + "...");
-                Console.WriteLine(e);
-            }
+            Days workingFromHomeDays = Days.Thursday | Days.Friday;
+            Console.WriteLine($"Join a meeting by phone on {meetingDays & workingFromHomeDays}");
+            // Output:
+            // Join a meeting by phone on Friday
+
+            bool isMeetingOnTuesday = (meetingDays & Days.Tuesday) == Days.Tuesday;
+            Console.WriteLine($"Is there a meeting on Tuesday: {isMeetingOnTuesday}");
+            // Output:
+            // Is there a meeting on Tuesday: False
+
+            var a = (Days)37;
+            Console.WriteLine(a);
+            // Output:
+            // Monday, Wednesday, Saturday
             Console.Read();
         }
     }
